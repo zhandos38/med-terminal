@@ -18,8 +18,14 @@ class EmployeeController extends Controller
 {
     public function actionIndex()
     {
-        $models = Employee::find()->all();
-        return $this->render('index', ['models' => $models]);
+        $this->layout = 'index';
+        return $this->render('index');
+    }
+
+    public function actionList($id)
+    {
+        $models = Employee::find()->where(['type' => $id])->all();
+        return $this->render('list', ['models' => $models]);
     }
 
     public function actionView($id)

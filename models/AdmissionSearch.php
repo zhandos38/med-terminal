@@ -36,7 +36,7 @@ class AdmissionSearch extends Admission
     public function rules()
     {
         return [
-            [['id', 'status', 'type', 'department_id', 'room', 'is_discharged', 'updated_at', 'created_at'], 'integer'],
+            [['status', 'type', 'department_id', 'room', 'is_discharged', 'iin', 'updated_at', 'created_at'], 'integer'],
             [['full_name'], 'safe'],
             [['createTimeRange'], 'match', 'pattern' => '/^.+\s\-\s.+$/'],
         ];
@@ -84,7 +84,6 @@ class AdmissionSearch extends Admission
 
         // grid filtering conditions
         $query->andFilterWhere([
-            'id' => $this->id,
             'status' => $this->status,
             'type' => $this->type,
             'department_id' => $this->department_id,
@@ -94,11 +93,14 @@ class AdmissionSearch extends Admission
             'created_at' => $this->created_at,
         ]);
 
-        $query->andFilterWhere(['like', 'full_name', $this->full_name]);
+        $query->andFilterWhere([
+            'OR',
+            ['like', 'full_name', $this->full_name],
+            ['like', 'iin', $this->full_name],
+        ]);
 
         $query->andFilterWhere(['>=', 'created_at', $this->createTimeStart])
             ->andFilterWhere(['<', 'created_at', $this->createTimeEnd]);
-
 
         return $dataProvider;
     }

@@ -3,6 +3,8 @@
 use yii\helpers\Html;
 use yii\grid\GridView;
 use app\models\Department;
+use app\models\Admission;
+use yii\helpers\ArrayHelper;
 
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\AdmissionSearch */
@@ -27,45 +29,27 @@ $this->params['breadcrumbs'][] = $this->title;
 
 //            'id',
             'full_name',
+            'iin',
             [
                 'attribute' => 'status',
-                'value' => function($model) {
-                    switch ($model->status) {
-                        case 0:
-                            $status = 'Госпитализирован';
-                            break;
-                        case 1:
-                            $status = 'Отказ от госпитализации';
-                            break;
-                        case 2:
-                            $status = 'Переведен';
-                            break;
-                    }
-                    return $status;
-                }
+                'value' => function(Admission $model) {
+                    return $model->getStatusLabel();
+                },
+                'filter' => Admission::getStatuses()
             ],
             [
                 'attribute' => 'type',
-                'value' => function($model) {
-                    switch ($model->type) {
-                        case 0:
-                            $type = 'Плановый';
-                            break;
-                        case 1:
-                            $type = 'Экстренный';
-                            break;
-                        case 2:
-                            $type = 'Неотложенный';
-                            break;
-                    }
-                    return $type;
-                }
+                'value' => function(Admission $model) {
+                    return $model->getTypeLabel();
+                },
+                'filter' => Admission::getTypes()
             ],
             [
                 'attribute' => 'department_id',
-                'value' => function($model) {
-                       return $model->department ? $model->department->name : 'Не верно указан';
-                }
+                'value' => function(Admission $model) {
+                    return $model->department ? $model->department->name : 'Не верно указан';
+                },
+                'filter' => ArrayHelper::map(Department::find()->asArray()->all(), 'id', 'name')
             ],
             //'room',
             //'is_discharged',

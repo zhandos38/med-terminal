@@ -2,6 +2,8 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
+use app\models\Admission;
+use yii\helpers\ArrayHelper;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Admission */
@@ -16,29 +18,24 @@ use yii\widgets\ActiveForm;
 
             <?= $form->field($model, 'full_name')->textInput(['maxlength' => true, 'placeholder' => 'Введите имя и фамилию']) ?>
 
+            <?= $form->field($model, 'iin')->textInput(['maxlength' => true, 'placeholder' => 'Введите ИИН']) ?>
+
             <?= $form->field($model, 'status')->dropDownList(
-                [
-                    0 => 'Госпитализирован',
-                    1 => 'Отказ от госпитализации',
-                    2 => 'Переведен'
-                ],
+                Admission::getStatuses(),
                 [
                     'prompt' => 'Укажите статус'
                 ]
             ) ?>
 
             <?= $form->field($model, 'type')->dropDownList(
-                [
-                    0 => 'Плановый',
-                    1 => 'Экстренный',
-                    2 => 'Неотложенный'
-                ],
+                Admission::getTypes(),
                 [
                     'prompt' => 'Укажите тип'
                 ]
             ) ?>
 
-            <?= $form->field($model, 'department_id')->dropDownList(\yii\helpers\ArrayHelper::map(\app\models\Department::find()->all(), 'id', 'name'), [
+            <?= $form->field($model, 'department_id')->dropDownList(
+                    ArrayHelper::map(\app\models\Department::find()->all(), 'id', 'name'), [
                     'prompt' => 'Выберите отделение'
             ]) ?>
 

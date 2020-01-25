@@ -4,13 +4,22 @@ use kartik\daterange\DateRangePicker;
 use yii\base\Model;
 ?>
 <style>
-    #mlkeyboard {
-        position: absolute;
-        top: 200px;
+	#mlkeyboard {
+        position: fixed;
+        bottom: 0;
     }
 </style>
 <div class="site-index">
     <div class="container">
+        <div class="buttons-group">
+            <div class="go-home-button__wrapper">
+                <a href="/" class="go-home-button__link">
+                    <div class="go-home-button">
+                        <i class="fas fa-home"></i> <?= Yii::t('site', 'На главную страницу') ?>
+                    </div>
+                </a>
+            </div>
+        </div>
         <div>
             <?= $this->render('_search', [
                 'searchModel' => $searchModel,
@@ -113,7 +122,9 @@ use yii\base\Model;
 <?php
 $js =<<<JS
 $(document).ready(function(){
-  $('#admissionsearch-full_name').mlKeyboard({});
+  $('#admissionsearch-full_name').mlKeyboard({
+    layout: 'ru_RU'
+  });
 });
 
 var acc = document.getElementsByClassName("accordion");

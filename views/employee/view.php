@@ -7,6 +7,12 @@ use yii\helpers\Html;
 
 $this->title = 'График врача';
 ?>
+<style>
+    #mlkeyboard {
+        position: fixed;
+        bottom: 0;
+    }
+</style>
 <div class="employee-card">
     <div class="buttons-group">
         <div class="go-home-button__wrapper">
@@ -74,20 +80,35 @@ $this->title = 'График врача';
 
             <?= $form->field($ratingModel, 'value')->widget(\kartik\rating\StarRating::className(), [
             'pluginOptions' => [
-                'stars' => 10,
+                'stars' => 5,
                 'min' => 0,
-                'max' => 10,
+                'max' => 5,
                 'step' => 1,
                 'filledStar' => '<i class="glyphicon glyphicon-heart"></i>',
                 'emptyStar' => '<i class="glyphicon glyphicon-heart-empty"></i>',
                 'defaultCaption' => '{rating}',
-                'starCaptions' => new JsExpression("function(val){return val == 1 ? 'One heart' : val + ' " . Yii::t('site', 'Сердце') . " ';}")
+                'starCaptions' => [
+					0 => Yii::t('site', 'Просто ужасно'),
+					1 => Yii::t('site', 'Очень плохо'),
+					2 => Yii::t('site', 'Плохо'),
+					3 => Yii::t('site', 'Удовлетворительно'),
+					4 => Yii::t('site', 'Хорошо'),
+					5 => Yii::t('site', 'Отлично')
+				],
             ]
         ]) ?>
 
         <?= $form->field($ratingModel, 'comment')->textarea() ?>
-
-        <?= $form->field($ratingModel, 'iin')->textInput(['id' => 'rating-form-iin']) ?>
+		
+		<div class="row">
+			<div class="col-md-6">
+			<?= $form->field($ratingModel, 'iin')->textInput(['id' => 'rating-form-iin']) ?>
+			</div>
+			<div class="col-md-6">
+			<?= $form->field($ratingModel, 'customer_name')->textInput(['id' => 'rating-form-customer']) ?>
+			</div>
+	
+		</div>
 
         <div id="res"></div>
 
@@ -156,7 +177,22 @@ function iin(iin)
     return [(k == iin.substr(11, 1)), '<font color="red">Контрольный разряд ИИН неверный, должно быть ' + k + ', а стоит ' + iin.substr(11, 1) +'</font>'];    
 }
 
-    
+$(document).ready(function(){
+  $('#rating-comment').mlKeyboard({
+    layout: 'ru_RU'
+  });
+});
+$(document).ready(function(){
+  $('#rating-form-iin').mlKeyboard({
+    layout: 'ru_RU',
+    active_shift: false
+  });
+});
+$(document).ready(function(){
+  $('#rating-form-customer').mlKeyboard({
+    layout: 'ru_RU'
+  });
+});
 JS;
 
 $this->registerJs($js);

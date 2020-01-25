@@ -44,7 +44,7 @@ class Rating extends \yii\db\ActiveRecord
         return [
             [['employee_id', 'created_at', 'updated_at'], 'integer'],
             [['value'], 'number'],
-            [['comment'], 'string'],
+            [['comment', 'customer_name'], 'string'],
             [['iin'], 'string', 'max' => 255],
             [['employee_id'], 'exist', 'skipOnError' => true, 'targetClass' => Employee::className(), 'targetAttribute' => ['employee_id' => 'id']],
             ['value', 'required']
@@ -61,9 +61,10 @@ class Rating extends \yii\db\ActiveRecord
             'employee_id' => 'Врачи',
             'value' => Yii::t('site', 'Оценка'),
             'comment' => Yii::t('site', 'Комментарий'),
-            'iin' => Yii::t('site', 'ИИН'),
+            'iin' => Yii::t('site', 'ИИН пациента'),
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
+            'customer_name' => Yii::t('site', 'Ф.И.О пациента'),
         ];
     }
 

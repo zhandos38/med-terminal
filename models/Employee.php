@@ -3,6 +3,7 @@
 namespace app\models;
 
 use Yii;
+use yii\helpers\ArrayHelper;
 
 /**
  * This is the model class for table "employee".
@@ -22,9 +23,14 @@ use Yii;
  * @property string $saturday [varchar(100)]
  * @property mixed $position
  * @property string $sunday [varchar(100)]
+ * @property int $type [int(11)]
  */
 class Employee extends \yii\db\ActiveRecord
 {
+    const TYPE_DOCTOR = 0;
+    const TYPE_SISTER = 1;
+    const TYPE_TECHNO = 2;
+
     public $imageFile;
 
     public function behaviors()
@@ -50,7 +56,7 @@ class Employee extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['position_id', 'created_at', 'updated_at'], 'integer'],
+            [['position_id', 'type' ,'created_at', 'updated_at'], 'integer'],
             [['full_name', 'cabinet', 'image'], 'string', 'max' => 255],
             [['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'], 'string'],
             [['imageFile'], 'file', 'skipOnEmpty' => true, 'extensions' => 'png, jpg']
@@ -98,5 +104,19 @@ class Employee extends \yii\db\ActiveRecord
         if (!empty($this->imageFile))
             $this->image = $this->imageFile->baseName . '.' . $this->imageFile->extension;
         return true;
+    }
+
+    public static function getTypes()
+    {
+        return [
+            self::TYPE_DOCTOR => Yii::t('site', 'Врачи'),
+            self::TYPE_SISTER => Yii::t('site', 'Мед сестры'),
+            self::TYPE_SISTER => Yii::t('site', 'Санитарки'),
+        ];
+    }
+
+    public function getTypeLabel()
+    {
+        return ArrayHelper::getValue(self::getTypes(), $this->type);
     }
 }

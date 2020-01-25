@@ -2,6 +2,7 @@
 
 namespace app\modules\admin\models;
 
+use kartik\daterange\DateRangeBehavior;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use app\models\Rating;
@@ -11,6 +12,22 @@ use app\models\Rating;
  */
 class RatingSearch extends Rating
 {
+    public $createTimeRange;
+    public $createTimeStart;
+    public $createTimeEnd;
+
+    public function behaviors()
+    {
+        return [
+            [
+                'class' => DateRangeBehavior::className(),
+                'attribute' => 'createTimeRange',
+                'dateStartAttribute' => 'createTimeStart',
+                'dateEndAttribute' => 'createTimeEnd',
+            ]
+        ];
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -20,6 +37,7 @@ class RatingSearch extends Rating
             [['id', 'employee_id', 'created_at', 'updated_at'], 'integer'],
             [['value'], 'number'],
             [['comment', 'iin'], 'safe'],
+            [['createTimeRange'], 'match', 'pattern' => '/^.+\s\-\s.+$/']
         ];
     }
 
@@ -68,6 +86,11 @@ class RatingSearch extends Rating
 
         $query->andFilterWhere(['like', 'comment', $this->comment])
             ->andFilterWhere(['like', 'iin', $this->iin]);
+
+        if ($this->createTimeRange) {
+            $query->andFilterWhere(['>=', 'created_at', $this->createTimeStart+((60*60)*6)])
+                ->andFilterWhere(['<', 'created_at', $this->createTimeEnd+((60*60)*6)]);
+        }
 
         return $dataProvider;
     }

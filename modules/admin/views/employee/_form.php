@@ -18,6 +18,8 @@ use yii\widgets\ActiveForm;
         'prompt' => 'Выберите должность'
     ]) ?>
 
+    <?= $form ?>
+
     <?= $form->field($model, 'cabinet')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'imageFile')->fileInput() ?>

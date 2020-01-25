@@ -28,7 +28,7 @@ AppAsset::register($this);
 <header class="header">
     <div class="container" style="display: flex; justify-content: space-between">
         <div class="header__name">
-            ГКП на ПХВ  «Городская поликлиника №7» УЗ города Шымкент
+            <?= Yii::t('site', 'ГКП на ПХВ "Областной противотуберкулезный диспансер"') ?>
         </div>
         <div class="header__lang">
             <?= $this->render('select-language') ?>
@@ -36,7 +36,7 @@ AppAsset::register($this);
     </div>
 </header>
 <div class="wrap">
-    <div class="container" style="background-color: #fff;">
+    <div class="container container-wrapper">
         <?= Breadcrumbs::widget([
             'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
         ]) ?>
@@ -47,7 +47,7 @@ AppAsset::register($this);
 
 <footer class="footer">
     <div class="container">
-        <p class="pull-left">Powered by Itb-group</p>
+        <p class="pull-left">Powered by Itb-group.kz - +7(702)184-42-95</p>
     </div>
 </footer>
 

@@ -4,11 +4,12 @@ use yii\helpers\Html;
 use yii\grid\GridView;
 use yii\widgets\Pjax;
 use app\models\Rating;
+use kartik\daterange\DateRangePicker;
 /* @var $this yii\web\View */
 /* @var $searchModel app\modules\admin\models\RatingSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Ratings';
+$this->title = 'Рейтинги';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="rating-index">
@@ -38,12 +39,24 @@ $this->params['breadcrumbs'][] = $this->title;
                 ]
             ],
             'comment:ntext',
-            'iin',
+            'customer_name',
+			'iin',
             [
                 'attribute' => 'created_at',
                 'value' => function(Rating $model) {
                     return date('d/m/Y H:i', $model->created_at);
-                }
+                },
+                'filter' => DateRangePicker::widget([
+                    'model' => $searchModel,
+                    'attribute' => 'createTimeRange',
+                    'convertFormat' => true,
+                    'pluginOptions' => [
+                        'locale' => [
+                            'format'=>'Y-m-d'
+                        ],
+                        'convertFormat'=>true,
+                    ]
+                ]),
             ],
             //'updated_at',
 
